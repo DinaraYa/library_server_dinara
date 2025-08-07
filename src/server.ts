@@ -1,4 +1,4 @@
-import express from "express";
+import express, {NextFunction, Response, Request} from "express";
 import {PORT} from "./config/libConfig.ts";
 import {libRouter} from "./routes/libRouter.ts";
 import {errorHandler} from "./errorHandler/errorHandler.ts";
@@ -12,19 +12,19 @@ export const launchServer = () => {
     // ===================== Middleware ===================
 
     app.use(express.json());
+    app.use((req: Request, res:Response, next:NextFunction) => next())
 
 
     // ===================== Router ===================
 
-
-    app.use('/' , libRouter);
+    app.use('/api' , libRouter);
 
     app.use((req, res) => {
-        res.status(404).send('Page not found');
+        res.status(404).send("Page not found")
     })
 
-    // ===================== ErrorHandler ===================
+    //================ ErrorHandler ================
 
-    app.use(errorHandler);
+    app.use(errorHandler)
 
 }
