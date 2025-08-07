@@ -11,8 +11,7 @@ export class BookController {
 
     getAllBooks(req: Request, res: Response) {
         const result = this.LibService.getAllBooks();
-        console.log(result);
-        res.json(result);
+        res.status(200).json(result);
 }
 
     addBook(req: Request, res: Response) {
@@ -28,14 +27,14 @@ export class BookController {
     removeBook(req: Request, res: Response) {
         const id = req.params.id;
         const book = this.LibService.removeBook(id);
-        res.json(book);
+        res.status(200).json(book);
     }
 
     getBooksByGenre(req: Request, res: Response) {
         const genreParam: string = req.params.genre.toString();
         const genre: BookGenres = genreParam as BookGenres;
         const result: Book [] = this.LibService.getBooksByGenre(genre);
-        res.json(result);
+        res.status(200).json(result);
     }
 
 
@@ -44,20 +43,11 @@ export class BookController {
         const reader = req.params.reader;
         this.LibService.pickUpBook(id, reader);
         res.status(201).send("Book picked up");
-
-
     }
 
     returnBook(req: Request, res: Response) {
         const id = req.params.id;
         this.LibService.returnBook(id);
         res.status(200).send("Book returned");
-
     }
-
-
-
-
-
-
 }
