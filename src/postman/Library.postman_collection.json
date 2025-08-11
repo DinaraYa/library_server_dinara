@@ -20,7 +20,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \n    \"title\": \"r3r\",\n    \"author\": \"\",\n    \"genre\": \"dystopia\"\n}",
+					"raw": "{\n    \n    \"title\": \"The Lord of the Rings\",\n    \"author\": \"J.R.R. Tolkien\",\n    \"genre\": \"fantasy\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -78,7 +78,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3117/api/books/b577ad61-4aa7-4f98-9675-d56d96735a6b",
+					"raw": "http://localhost:3117/api/books/689a44f8586c2ca759c0d4b5",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -87,7 +87,7 @@
 					"path": [
 						"api",
 						"books",
-						"b577ad61-4aa7-4f98-9675-d56d96735a6b"
+						"689a44f8586c2ca759c0d4b5"
 					]
 				}
 			},
@@ -109,7 +109,7 @@
 					"raw": "{\n    \n    \"title\": \"vch\",\n    \"author\": \"ere\",\n    \"genre\": \"dystopia\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:3117/api/books/dystopia",
+					"raw": "http://localhost:3117/api/books/fantasy",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -118,7 +118,7 @@
 					"path": [
 						"api",
 						"books",
-						"dystopia"
+						"fantasy"
 					]
 				}
 			},
@@ -130,7 +130,7 @@
 				"method": "PATCH",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3117/api/books/d560b8d8-89d4-41a1-a29b-bdef5641064b/L",
+					"raw": "http://localhost:3117/api/books/689a325333ce5b6bc00becea/lion",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -139,8 +139,8 @@
 					"path": [
 						"api",
 						"books",
-						"d560b8d8-89d4-41a1-a29b-bdef5641064b",
-						"L"
+						"689a325333ce5b6bc00becea",
+						"lion"
 					]
 				}
 			},
@@ -152,12 +152,10 @@
 				"method": "PATCH",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3117/api/books/d560b8d8-89d4-41a1-a29b-bdef5641064b",
-					"protocol": "http",
+					"raw": "{{baseURL}}/api/books/d560b8d8-89d4-41a1-a29b-bdef5641064b",
 					"host": [
-						"localhost"
+						"{{baseURL}}"
 					],
-					"port": "3117",
 					"path": [
 						"api",
 						"books",
@@ -166,6 +164,13 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "http://localhost:3117",
+			"type": "default"
 		}
 	]
 }

@@ -1,12 +1,14 @@
 import express, {NextFunction, Response, Request} from "express";
-import {PORT} from "./config/libConfig.ts";
+import {db, PORT} from "./config/libConfig.ts";
 import {libRouter} from "./routes/libRouter.ts";
 import {errorHandler} from "./errorHandler/errorHandler.ts";
 import morgan from 'morgan';
 import * as fs from "node:fs";
+import * as mongoose from "mongoose";
 
 
 export const launchServer = () => {
+    mongoose.connect(db).then(() => console.log("Connected with MongoDB..."));
     const app = express();
     app.listen(PORT, () => console.log(`Server runs http://localhost:${PORT}`));
     const logStream = fs.createWriteStream('access.log', { flags: 'a' });
@@ -15,6 +17,7 @@ export const launchServer = () => {
 
     app.use(express.json());
     app.use(morgan('dev')); // пишем в консоль
+
     app.use(morgan('combined', { stream: logStream }));
 
     // app.use((req: Request, res:Response, next:NextFunction) => next())

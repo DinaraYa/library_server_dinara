@@ -15,11 +15,11 @@ export const BookGenresDtoSchema = Joi.object({
 })
 
 export const BookIdDtoSchema = Joi.object({
-    id: Joi.string().length(36).required(),
+    id: Joi.string().length(24).required(),
 })
 
 export const BookPickUpDtoSchema = Joi.object({
-    id: Joi.string().length(36),
+    id: Joi.string().length(24),
     reader: Joi.string().min(3).trim().required(),
 
 })

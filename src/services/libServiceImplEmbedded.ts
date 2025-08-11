@@ -1,58 +1,91 @@
 import {LibService} from "./libService.ts";
-import {Book, BookGenres, BookStatus} from "../model/Book.ts";
+import {Book, BookDbModel, BookGenres, BookStatus} from "../model/Book.ts";
 import {HttpError} from "../errorHandler/HttpError.js";
 
 
 export class LibServiceImplEmbedded implements LibService {
     private books: Book[] = [];
 
-    addBook(book: Book): boolean {
-        const index = this.books.findIndex((item) => item.id === book.id);
-        if (index === -1) {
-            this.books.push(book);
-            return true;
-        } else
-            throw new HttpError(409, `Book with id ${book.id} already exists`);
+    addBook = async (data: Book): Promise<boolean> => {
+        const BookToAdd = new BookDbModel(data);
+        await BookToAdd.save();
+        return true;
     }
 
-    getAllBooks(): Book[] {
-        return [...this.books];
+    getAllBooks = async (): Promise<Book[]> => {
+        return BookDbModel.find();
     }
 
-    getBooksByGenre(genre: BookGenres): Book[] {
-        const books = this.books.filter((item) => item.genre === genre);
+    getBooksByGenre = async (genre: BookGenres): Promise<Book[]> => {
+        const books: Book[] = await BookDbModel.find({genre});
         if (books.length === 0) throw new HttpError(404, "Books not found.");
         return books;
     }
 
-    pickUpBook(id: string, reader: string): void {
-        const index = this.books.findIndex((book) => book.id === id);
-        if (index === -1) throw new HttpError(404, "Books not found.");
-        const book = this.books[index];
+    pickUpBook = async (id: string, reader: string): Promise<void> => {
+        const book = await BookDbModel.findById({id});
+        console.log(book + id);
+        // @ts-ignore
+        if (!book) throw new HttpError(404, "Books not found.");
+        if(book.status !== BookStatus.ON_STOCK) throw new HttpError(409, "No this book on stock");
+        // @ts-ignore
         book.status = BookStatus.ON_HAND;
+        // @ts-ignore
         book.pickList.push({
             reader: reader,
-            pickDate: new Date().toISOString(),
+            pickDate: new Date().toDateString(),
             returnDate: null
-        })
+            })
+        await book.save();
+
+
+        // const index = this.books.findIndex((book) => book.id === id);
+        // if (index === -1) throw new HttpError(404, "Books not found.");
+        //const book = this.books[index];
+        //book.status = BookStatus.ON_HAND;
+        // book.pickList.push({
+        //     reader: reader,
+        //     pickDate: new Date().toDateString(),
+        //     returnDate: null
+        // })
     }
 
-    removeBook(id: string): Book | null {
-        const index = this.books.findIndex((item) => item.id === id);
-        if (index === -1) throw new HttpError(404, "Books not found.");
-        else return this.books.splice(index, 1) [0];
+    removeBook = async (id: string): Promise<Book> => {
+        const book = await BookDbModel.findByIdAndDelete(id)
+        if (!book) throw new HttpError(404, "Book not found.");
+        // @ts-ignore
+        return book;
+        // const index = this.books.findIndex((item) => item.id === id);
+        // if (index === -1) throw new HttpError(404, "Books not found.");
+        // else return this.books.splice(index, 1) [0];
     }
 
-    returnBook(id: string): void {
-        const index = this.books.findIndex((book) => book.id === id);
-        if (index === -1) throw new HttpError(404, "Books not found.");
-        const book = this.books[index];
+
+
+    returnBook = async (id: string): Promise<void> => {
+        const book = await BookDbModel.findById({id});
+        // @ts-ignore
+        if (!book) throw new HttpError(404, "Books not found.");
+        if (book.status !== BookStatus.ON_HAND) throw new HttpError(409, "his book is on stock");
+        // @ts-ignore
+
         book.status = BookStatus.ON_STOCK;
 
-        const lastRecord = book.pickList[book.pickList.length - 1];
-        if (!lastRecord) throw new HttpError(409, "No pickup record to return.");
-        lastRecord.reader = "";
-        lastRecord.returnDate = new Date().toISOString();
+        // @ts-ignore
+        book.pickList[book.pickList.length - 1].returnDate = new Date().toDateString();
+        // @ts-ignore
+        await book.save();
+
+        // const index = this.books.findIndex((book) => book.id === id);
+        // if (index === -1) throw new HttpError(404, "Books not found.");
+        //const book = this.books[index];
+        //book.status = BookStatus.ON_STOCK;
+
+        //const lastRecord = book.pickList[book.pickList.length - 1];
+        // if (!lastRecord) throw new HttpError(409, "No pickup record to return.");
+        // lastRecord.reader = "";
+        // lastRecord.returnDate = new Date().toISOString();
+        //
     }
 }
 
