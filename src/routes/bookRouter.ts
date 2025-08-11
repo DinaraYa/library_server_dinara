@@ -1,6 +1,7 @@
 import express, {Request, Response} from "express";
 import {BookController} from "../controllers/BookController.js";
-import {BookDtoSchema, BookGenresDtoSchema, BookIdDtoSchema, BookPickUpDtoSchema} from "../joiSchemas/bookShemas.js";
+import {BookDtoSchema, BookGenresDtoSchema, BookIdDtoSchema, BookPickUpDtoSchema} from "../validation/joiSchemas.js";
+import {validation} from "../validation/validation.js";
 
 export const bookRouter = express.Router();
 
@@ -10,43 +11,12 @@ bookRouter.get('/', (req: Request, res: Response) => {
     controller.getAllBooks(req, res);
 });
 
-bookRouter.get('/:genre', (req: Request, res: Response) => {
-    const {error} = BookGenresDtoSchema.validate(req.params);
-    if (error) {
-        res.status(400).send({message: error.message});
-    }
-    controller.getBooksByGenre(req, res);
-})
+bookRouter.get('/:genre', validation(BookGenresDtoSchema),controller.getBooksByGenre.bind(controller))
 
+bookRouter.post('/', validation(BookDtoSchema), controller.addBook.bind(controller));
 
-bookRouter.post('/', (req: Request, res: Response) => {
-    const {error} = BookDtoSchema.validate(req.body);
-    if (error) {
-        res.status(400).send({message: error.message});
-    }
-    controller.addBook(req, res);
-});
+bookRouter.delete('/:id', validation(BookIdDtoSchema), controller.removeBook.bind(controller));
 
-bookRouter.delete('/:id', (req: Request, res: Response) => {
-    const {error} = BookIdDtoSchema.validate(req.params);
-    if (error) {
-        res.status(400).send({message: error.message});
-    }
-    controller.removeBook(req, res);
-})
+bookRouter.patch('/:id/:reader', validation(BookPickUpDtoSchema), controller.pickUpBook.bind(controller));
 
-bookRouter.patch('/:id/:reader', (req: Request, res: Response) => {
-   const {error} = BookPickUpDtoSchema.validate(req.params);
-    if (error) {
-        res.status(400).send({message: error.message});
-    }
-    controller.pickUpBook(req, res);
-})
-
-bookRouter.patch('/:id', (req: Request, res: Response) => {
-    const {error} = BookIdDtoSchema.validate(req.params);
-    if (error) {
-        res.status(400).send({message: error.message});
-    }
-    controller.returnBook(req, res);
-})
+bookRouter.patch('/:id', validation(BookIdDtoSchema),  controller.returnBook.bind(controller));

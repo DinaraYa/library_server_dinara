@@ -3,8 +3,8 @@ import {BookGenres, BookStatus, PickRecord} from "../model/Book.js";
 
 
 export const BookDtoSchema = Joi.object({
-    title: Joi.string().min(3).trim().required().empty(""),
-    author: Joi.string().min(3).trim().required().empty(""),
+    title: Joi.string().min(2).trim().required().empty(""),
+    author: Joi.string().min(1).trim().required().empty(""),
     genre: Joi.string().valid(...Object.values(BookGenres)).required(),
     quantity: Joi.number().optional(),
 })
