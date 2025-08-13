@@ -1,5 +1,5 @@
 import {LibService} from "./libService.ts";
-import {Book, BookDbModel, BookGenres, BookStatus} from "../model/Book.ts";
+import {Book, BookGenres, BookStatus} from "../model/Book.ts";
 import {HttpError} from "../errorHandler/HttpError.js";
 
 
@@ -12,7 +12,7 @@ export class LibServiceImplEmbedded implements LibService {
             this.books.push(book);
             return new Promise(resolve => resolve(true))
         }
-        return true;
+        return Promise.resolve(false);
     }
 
     async getAllBooks(): Promise<Book[]> {
@@ -43,8 +43,6 @@ export class LibServiceImplEmbedded implements LibService {
         else return this.books.splice(index, 1) [0];
     }
 
-
-
     async returnBook (id: string): Promise<void> {
         const index = this.books.findIndex((book) => book.id === id);
         if (index === -1) throw new HttpError(404, "Books not found.");
@@ -55,7 +53,8 @@ export class LibServiceImplEmbedded implements LibService {
         if (!lastRecord) throw new HttpError(409, "No pickup record to return.");
         lastRecord.reader = "";
         lastRecord.returnDate = new Date().toISOString();
-
     }
+
 }
 
+export const libServiceEmbedded = new LibServiceImplEmbedded();

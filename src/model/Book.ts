@@ -41,19 +41,3 @@ export type PickRecord = {
     pickDate: string,
     returnDate: string | null
 }
-
-
-export const BookMongooseSchema = new mongoose.Schema({
-    id: {type: String, unique: true, required: true},
-    title: {type: String, required: true},
-    author: {type: String, required: true},
-    genre: {type: String, required: true, enum: Object.values(BookGenres)},
-    status: {type: String, required: true, enum: Object.values(BookStatus)},
-    pickList: [{
-        reader: {type: String, required: false},
-        pickDate: {type: String, required: false},
-        returnDate: {type: String, required: false},
-    }]
-})
-
-export const BookDbModel = mongoose.model('Book', BookMongooseSchema, 'book_collection')

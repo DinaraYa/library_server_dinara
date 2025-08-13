@@ -1,66 +1,76 @@
 import {LibService} from "./libService.ts";
-import {Book, BookDbModel, BookGenres, BookStatus} from "../model/Book.ts";
+import {Book, BookGenres, BookStatus} from "../model/Book.ts";
+import {BookMongooseModel} from "../model/BookMongooseModel.js";
 import {HttpError} from "../errorHandler/HttpError.js";
 
 
 export class LibServiceImplMongo implements LibService {
-    private books: Book[] = [];
 
-    addBook = async (data: Book): Promise<boolean> => {
-        const BookToAdd = new BookDbModel(data);
-        await BookToAdd.save();
-        return true;
+    async addBook  (book: Book): Promise<boolean> {
+        const isExist = await BookMongooseModel.findById(book.id).exec();
+        if(isExist)
+            return Promise.resolve(false);
+        // const newBook = new BookMongooseModel(book);
+        // await newBook.save();
+        const temp = await BookMongooseModel.create({
+            _id: book.id,
+            title: book.title,
+            author: book.author,
+            genre: book.genre,
+            status: book.status,
+            pickList: book.pickList
+        })
+        if(!temp) return Promise.resolve(false);
+        return Promise.resolve(true);
     }
 
-    getAllBooks = async (): Promise<Book[]> => {
-        return BookDbModel.find();
+    async getAllBooks(): Promise<Book[]>{
+        const result = await BookMongooseModel.find() as Book[]
+        return Promise.resolve(result) ;
     }
 
     getBooksByGenre = async (genre: BookGenres): Promise<Book[]> => {
-        const books: Book[] = await BookDbModel.find({genre});
-        if (books.length === 0) throw new HttpError(404, "Books not found.");
-        return books;
+        const result = await BookMongooseModel.find({genre}).exec() as Book[];
+        return Promise.resolve(result) ;
     }
 
     pickUpBook = async (id: string, reader: string): Promise<void> => {
-        const book = await BookDbModel.findById({id});
-        console.log(book + id);
-        // @ts-ignore
-        if (!book) throw new HttpError(404, "Books not found.");
-        if (book.status !== BookStatus.ON_STOCK) throw new HttpError(409, "No this book on stock");
-        // @ts-ignore
+        const book = await BookMongooseModel.findById(id).exec();
+        if (!book)
+            throw new HttpError(404, `Book with id: ${id} not found`);
+        if (book.status !== BookStatus.ON_STOCK)
+            throw new HttpError(409, "Book on hand");
         book.status = BookStatus.ON_HAND;
-        // @ts-ignore
         book.pickList.push({
             reader: reader,
             pickDate: new Date().toDateString(),
             returnDate: null
-        })
-        await book.save();
+            })
+         book.save();
     }
 
     removeBook = async (id: string): Promise<Book> => {
-        const book = await BookDbModel.findByIdAndDelete(id)
+        const book = await BookMongooseModel.findByIdAndDelete(id).exec() as Book;
         if (!book) throw new HttpError(404, "Book not found.");
-        // @ts-ignore
-        return book;
-
+        return Promise.resolve(book);
     }
 
-
     returnBook = async (id: string): Promise<void> => {
-        const book = await BookDbModel.findById({id});
-        // @ts-ignore
-        if (!book) throw new HttpError(404, "Books not found.");
-        if (book.status !== BookStatus.ON_HAND) throw new HttpError(409, "his book is on stock");
-        // @ts-ignore
-
+        const book = await BookMongooseModel.findById(id);
+        if (!book)
+            throw new HttpError(404, `Book with id: ${id} not found`);
+        if (book.status !== BookStatus.ON_HAND)
+            throw new HttpError(409, "the book is on stock");
         book.status = BookStatus.ON_STOCK;
+        const temp = book.pickList[book.pickList.length - 1];
+        temp.returnDate = new Date().toDateString();
+        book.save();
+    }
 
-        // @ts-ignore
-        book.pickList[book.pickList.length - 1].returnDate = new Date().toDateString();
-        // @ts-ignore
-        await book.save();
+    getBooksByGenreAndStatus = async (genre: BookGenres, status: BookStatus): Promise<Book[]> => {
+        const result = await BookMongooseModel.find({genre, status}).exec() as Book[];
+        return Promise.resolve(result) ;
     }
 }
 
+export const libServiceMongo = new LibServiceImplMongo();
