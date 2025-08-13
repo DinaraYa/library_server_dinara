@@ -1,5 +1,5 @@
 import {LibService} from "../services/libService.ts";
-import {LibServiceImplEmbedded} from "../services/libServiceImplEmbedded.ts";
+import {LibServiceImplMongo} from "../services/libServiceImplMongo.ts";
 import {Request, Response} from "express";
 import {Book, BookDto, BookGenres} from "../model/Book.ts";
 import {HttpError} from "../errorHandler/HttpError.ts";
@@ -7,7 +7,7 @@ import {convertBookDtoToBook} from "../utils/tools.js";
 
 export class BookController {
 
-    private LibService: LibService = new  LibServiceImplEmbedded();
+    private LibService: LibService = new  LibServiceImplMongo();
 
     async getAllBooks(req: Request, res: Response) {
         const result = await this.LibService.getAllBooks();
