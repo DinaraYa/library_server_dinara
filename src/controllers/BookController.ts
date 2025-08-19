@@ -2,11 +2,13 @@ import {Request, Response} from "express";
 import {Book, BookDto, BookGenres} from "../model/Book.ts";
 import {HttpError} from "../errorHandler/HttpError.ts";
 import {convertBookDtoToBook, getGenre, getStatus} from "../utils/tools.js";
+import {LibServiceSQL as service} from "../services/libServiceImplSQL.js";
 //import {libServiceEmbedded as service} from "../services/libServiceImplEmbedded.js";
-import {libServiceMongo as service} from "../services/libServiceImplMongo.js";
+//import {libServiceMongo as service} from "../services/libServiceImplMongo.js";
 
-export const getBooksByGenreAndStatus = async (req: Request, res: Response) => {
-    const {genre, status} = req.query;
+
+export const getBooksByGenreAndStatus = async (req: Request, res: Response) => { //don't work
+    const {genre, status} = req.params;
     const genre_upd = getGenre(genre as string);
     const status_upd = getStatus(status as string);
     const result: Book [] = await service.getBooksByGenreAndStatus(genre_upd,status_upd);

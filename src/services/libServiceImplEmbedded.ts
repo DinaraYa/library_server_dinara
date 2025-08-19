@@ -1,6 +1,7 @@
 import {LibService} from "./libService.ts";
 import {Book, BookGenres, BookStatus} from "../model/Book.ts";
 import {HttpError} from "../errorHandler/HttpError.js";
+import {pool} from "../config/libConfig.js";
 
 
 export class LibServiceImplEmbedded implements LibService {
@@ -53,6 +54,11 @@ export class LibServiceImplEmbedded implements LibService {
         if (!lastRecord) throw new HttpError(409, "No pickup record to return.");
         lastRecord.reader = "";
         lastRecord.returnDate = new Date().toISOString();
+    }
+
+    async  getBooksByGenreAndStatus(genre: BookGenres, status: BookStatus): Promise<Book[]> {
+        return Promise.resolve([]);
+
     }
 
 }

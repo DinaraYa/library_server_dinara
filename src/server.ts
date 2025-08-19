@@ -1,15 +1,22 @@
-import express from "express";
-import {PORT} from "./config/libConfig.ts";
+import express, {NextFunction} from "express";
+//import {PORT} from "./config/libConfig.ts";
 import {libRouter} from "./routes/libRouter.ts";
-import {errorHandler} from "./errorHandler/errorHandler.ts";
 import morgan from 'morgan';
 import * as fs from "node:fs";
+import dotenv from 'dotenv';
+
 
 
 
 export const launchServer = () => {
+    // ==================== load environments ====================
+
+    dotenv.config();
+    console.log("process.env "+ process.env)
+
+
     const app = express();
-    app.listen(PORT, () => console.log(`Server runs http://localhost:${PORT}`));
+    app.listen(process.env.PORT, () => console.log(`Server runs http://localhost:${process.env.PORT}`));
     const logStream = fs.createWriteStream('access.log', { flags: 'a' });
 
     // ===================== Middleware ===================
@@ -31,8 +38,16 @@ export const launchServer = () => {
         res.status(404).send("Page not found")
     })
 
+
+    // function errorHandler(err: any, req: Request, res: Response, next: NextFunction) {
+    //     console.error("🔥 Server error:", err);   // вот тут будет полный объект ошибки
+    //     // @ts-ignore
+    //     res.status(500).json({ message: "Internal Server Error", error: err.message });
+    // }
+
+
     //================ ErrorHandler ================
 
-    app.use(errorHandler)
+    //app.use(errorHandler);
 
 }

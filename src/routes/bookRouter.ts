@@ -19,4 +19,4 @@ bookRouter.patch('/:id/:reader', validationParams(BookPickUpDtoSchema), controll
 
 bookRouter.patch('/:id', validationParams(BookIdDtoSchema),  controller.returnBook.bind(controller));
 
-bookRouter.get('/genre_status', controller. getBooksByGenreAndStatus.bind(controller));
+bookRouter.get('/genre_status/:genre/:status', controller. getBooksByGenreAndStatus.bind(controller));
