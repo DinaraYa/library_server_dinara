@@ -20,7 +20,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \n    \"title\": \"The Lord of the Rings\",\n    \"author\": \"J.R.R. Tolkien\",\n    \"genre\": \"fantasy\"\n}",
+					"raw": "{ \n    \"title\": \"Pride and Prejudice\", \n    \"author\": \"Jane Austen\", \n    \"genre\": \"romantic\" }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -78,7 +78,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3117/api/books/689a44f8586c2ca759c0d4b5",
+					"raw": "http://localhost:3117/api/books/aeeb609e-9dc5-4f32-a8f5-70a0f67d33f3",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -87,7 +87,7 @@
 					"path": [
 						"api",
 						"books",
-						"689a44f8586c2ca759c0d4b5"
+						"aeeb609e-9dc5-4f32-a8f5-70a0f67d33f3"
 					]
 				}
 			},
@@ -109,7 +109,7 @@
 					"raw": "{\n    \n    \"title\": \"vch\",\n    \"author\": \"ere\",\n    \"genre\": \"dystopia\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:3117/api/books/fantasy",
+					"raw": "http://localhost:3117/api/books/sci-fi",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -118,7 +118,7 @@
 					"path": [
 						"api",
 						"books",
-						"fantasy"
+						"sci-fi"
 					]
 				}
 			},
@@ -130,7 +130,7 @@
 				"method": "PATCH",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3117/api/books/689a325333ce5b6bc00becea/lion",
+					"raw": "http://localhost:3117/api/books/c3082e8e-80c9-4e02-becf-472281e5492a/Lion",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -139,8 +139,8 @@
 					"path": [
 						"api",
 						"books",
-						"689a325333ce5b6bc00becea",
-						"lion"
+						"c3082e8e-80c9-4e02-becf-472281e5492a",
+						"Lion"
 					]
 				}
 			},
@@ -152,14 +152,150 @@
 				"method": "PATCH",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/api/books/d560b8d8-89d4-41a1-a29b-bdef5641064b",
+					"raw": "http://localhost:3117/api/books/c3082e8e-80c9-4e02-becf-472281e5492a",
+					"protocol": "http",
 					"host": [
-						"{{baseURL}}"
+						"localhost"
 					],
+					"port": "3117",
 					"path": [
 						"api",
 						"books",
-						"d560b8d8-89d4-41a1-a29b-bdef5641064b"
+						"c3082e8e-80c9-4e02-becf-472281e5492a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getBooksByGenreAndStatus",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3117/api/books/genre_status/classic/on_stock",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3117",
+					"path": [
+						"api",
+						"books",
+						"genre_status",
+						"classic",
+						"on_stock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addAcount",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n    \"userName\": \"leon\",\n    \"email\": \"leon@gmail.com\",\n    \"password\": \"jvgd8yffbgr\",\n    \"birthdate\": \"2001-07-23\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3117/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3117",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAccount",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 123456789,\n    \"userName\": \"vera\",\n    \"email\": \"vera@gmail.com\",\n    \"password\": \"nhljefwof13evd\",\n    \"birthdate\": \"1990-05-30\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3117/accounts/reader/68a76b1f4a57bf3b3ca737ce",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3117",
+					"path": [
+						"accounts",
+						"reader",
+						"68a76b1f4a57bf3b3ca737ce"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "removeAccount",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3117/accounts/68a76c7e4a57bf3b3ca737cf",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3117",
+					"path": [
+						"accounts",
+						"68a76c7e4a57bf3b3ca737cf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "changePassword",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"68a775184a57bf3b3ca737d0\",\n    \"userName\": \"alex\",\n    \"email\": \"alex@gmail.com\",\n    \"password\": \"bfgeufufefef\",\n    \"birthdate\": \"2000-06-13\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3117/accounts/password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3117",
+					"path": [
+						"accounts",
+						"password"
 					]
 				}
 			},
