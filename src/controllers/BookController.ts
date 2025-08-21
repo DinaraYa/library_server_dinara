@@ -7,13 +7,13 @@ import {LibServiceSQL as service} from "../services/libServiceImplSQL.js";
 //import {libServiceMongo as service} from "../services/libServiceImplMongo.js";
 
 
-export const getBooksByGenreAndStatus = async (req: Request, res: Response) => { //don't work
-    const {genre, status} = req.params;
-    const genre_upd = getGenre(genre as string);
-    const status_upd = getStatus(status as string);
-    const result: Book [] = await service.getBooksByGenreAndStatus(genre_upd,status_upd);
-    res.status(200).json(result);
-}
+// export const getBooksByGenreAndStatus = async (req: Request, res: Response) => { //don't work
+//     const {genre, status} = req.params;
+//     const genre_upd = getGenre(genre as string);
+//     const status_upd = getStatus(status as string);
+//     const result: Book [] = await service.getBooksByGenreAndStatus(genre_upd,status_upd);
+//     res.status(200).json(result);
+// }
 export const getAllBooks = async (req: Request, res: Response) => {
     const result = await service.getAllBooks();
     res.json(result);

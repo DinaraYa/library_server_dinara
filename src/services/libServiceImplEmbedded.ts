@@ -56,11 +56,6 @@ export class LibServiceImplEmbedded implements LibService {
         lastRecord.returnDate = new Date().toISOString();
     }
 
-    async  getBooksByGenreAndStatus(genre: BookGenres, status: BookStatus): Promise<Book[]> {
-        return Promise.resolve([]);
-
-    }
-
 }
 
 export const libServiceEmbedded = new LibServiceImplEmbedded();

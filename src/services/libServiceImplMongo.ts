@@ -67,10 +67,10 @@ export class LibServiceImplMongo implements LibService {
         book.save();
     }
 
-    getBooksByGenreAndStatus = async (genre: BookGenres, status: BookStatus): Promise<Book[]> => {
-        const result = await BookMongooseModel.find({genre, status}).exec() as Book[];
-        return Promise.resolve(result) ;
-    }
-}
+//     getBooksByGenreAndStatus = async (genre: BookGenres, status: BookStatus): Promise<Book[]> => {
+//         const result = await BookMongooseModel.find({genre, status}).exec() as Book[];
+//         return Promise.resolve(result) ;
+//     }
+ }
 
 export const libServiceMongo = new LibServiceImplMongo();
