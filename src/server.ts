@@ -1,9 +1,11 @@
 import express, {NextFunction} from "express";
-//import {PORT} from "./config/libConfig.ts";
+import {PORT} from "./config/libConfig.ts";
 import {libRouter} from "./routes/libRouter.ts";
 import morgan from 'morgan';
 import * as fs from "node:fs";
 import dotenv from 'dotenv';
+import {errorHandler} from "./errorHandler/errorHandler.js";
+import {accountRouter} from "./routes/accountRouter.js";
 
 
 
@@ -16,7 +18,8 @@ export const launchServer = () => {
 
 
     const app = express();
-    app.listen(process.env.PORT, () => console.log(`Server runs http://localhost:${process.env.PORT}`));
+    //app.listen(process.env.PORT, () => console.log(`Server runs http://localhost:${process.env.PORT}`));
+    app.listen(PORT, () => console.log(`Server runs http://localhost:${PORT}`));
     const logStream = fs.createWriteStream('access.log', { flags: 'a' });
 
     // ===================== Middleware ===================
@@ -31,7 +34,7 @@ export const launchServer = () => {
 
 
     // ===================== Router ===================
-
+    app.use('/accounts', accountRouter)
     app.use('/api' , libRouter);
 
     app.use((req, res) => {
@@ -40,7 +43,7 @@ export const launchServer = () => {
 
 
     // function errorHandler(err: any, req: Request, res: Response, next: NextFunction) {
-    //     console.error("🔥 Server error:", err);   // вот тут будет полный объект ошибки
+    //     console.error("Server error: ", err);   // вот тут будет полный объект ошибки
     //     // @ts-ignore
     //     res.status(500).json({ message: "Internal Server Error", error: err.message });
     // }
@@ -48,6 +51,6 @@ export const launchServer = () => {
 
     //================ ErrorHandler ================
 
-    //app.use(errorHandler);
+    app.use(errorHandler);
 
 }

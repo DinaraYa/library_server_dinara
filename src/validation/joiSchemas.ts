@@ -9,6 +9,18 @@ export const BookDtoSchema = Joi.object({
     quantity: Joi.number().optional(),
 })
 
+export const ReaderDtoSchema = Joi.object({
+    id: Joi.string().length(24),
+    userName: Joi.string().min(1).required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().alphanum().min(8).required(),
+    birthdate: Joi.string().isoDate().required(),
+})
+
+export const ChangePasswordDtoSchema = Joi.object({
+    id: Joi.number().positive().max(999999999).min(100000000).required(),
+    password: Joi.string().alphanum().min(8).required(),
+})
 
 export const BookGenresDtoSchema = Joi.object({
     genre: Joi.string().valid(...Object.values(BookGenres)).trim().required(),
@@ -23,3 +35,4 @@ export const BookPickUpDtoSchema = Joi.object({
     reader: Joi.string().min(3).trim().required(),
 
 })
+
