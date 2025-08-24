@@ -1,7 +1,8 @@
 import {Request, response, Response} from "express";
 import {Reader, ReaderDto} from "../model/Reader.js";
-import {convertReaderDtoToReader} from "../utils/tools.js";
+import {checkReaderId, convertReaderDtoToReader} from "../utils/tools.js";
 import {accountServiceMongo} from "../services/AccountServiceImplMongo.js";
+
 
 
 
@@ -27,12 +28,14 @@ export const removeAccount= async (req: Request, res: Response) => {
     res.status(200).json(reader);
     response.send("Account deleted")
 }
+
 export const changePassword= async (req: Request, res: Response) => {
-    console.log("headers:", req.headers);
-    console.log("raw body:", req.body);
-    const body = req.body;
-    console.log("BODY controller " + body)
-    const reader: Reader = convertReaderDtoToReader(body as ReaderDto);
-    await accountServiceMongo.changePassword(reader);
-    res.status(200).send("Password updated");
+    const {id, oldPassword, newPassword} = req.body;
+    console.log("Controller " + id);
+    console.log(" oldPass "+oldPassword);
+    console.log(" newPass " + newPassword)
+    // const _id = checkReaderId(id);
+    // console.log("Controller " + _id );
+    await accountServiceMongo.changePassword(id, oldPassword, newPassword);
+    res.send("Password changed");
 }

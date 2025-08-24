@@ -10,7 +10,7 @@ export type ReaderDto = {
 }
 
 export type Reader = {
-    _id: string,
+    _id?: string,
     userName: string,
     email: string,
     birthdate: string,

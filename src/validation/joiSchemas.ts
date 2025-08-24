@@ -17,10 +17,17 @@ export const ReaderDtoSchema = Joi.object({
     birthdate: Joi.string().isoDate().required(),
 })
 
-export const ChangePasswordDtoSchema = Joi.object({
-    id: Joi.number().positive().max(999999999).min(100000000).required(),
-    password: Joi.string().alphanum().min(8).required(),
+export const ChangePassDtoSchema = Joi.object({
+    //id:Joi.number().positive().max(999999999).min(100000000).required(),
+    id: Joi.string().length(24).required(),
+    oldPassword: Joi.string().alphanum().min(8).required(),
+    newPassword: Joi.string().alphanum().min(8).required(),
 })
+
+// export const ChangePasswordDtoSchema = Joi.object({
+//     id: Joi.number().positive().max(999999999).min(100000000).required(),
+//     password: Joi.string().alphanum().min(8).required(),
+// })
 
 export const BookGenresDtoSchema = Joi.object({
     genre: Joi.string().valid(...Object.values(BookGenres)).trim().required(),

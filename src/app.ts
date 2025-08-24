@@ -12,4 +12,4 @@ mongoose.connect(MONGO_URI)
         console.log("Something went wrong");
     });
 
-launchServer();
+//launchServer();

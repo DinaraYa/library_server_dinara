@@ -15,4 +15,4 @@ export const pool = mysql.createPool({
     password: process.env.DB_PASSWORD
 })
 
-const connection = await pool.getConnection();
+// const connection = await pool.getConnection();

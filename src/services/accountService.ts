@@ -4,5 +4,5 @@ export interface AccountService {
     addAccount: (reader: Reader) => Promise<void>;
     getAccount: (id: string) => Promise<Reader>;
     removeAccount: (id: string) => Promise<Reader>;
-    changePassword: (reader: Reader) => Promise<void>
+    changePassword: (id: string, newPassword: string, oldPassword:string) => Promise<void>
 }
