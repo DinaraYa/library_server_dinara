@@ -16,3 +16,11 @@ export const pool = mysql.createPool({
 })
 
 // const connection = await pool.getConnection();
+
+export const SKIP_ROUTES = [
+    "POST/accounts",
+    "GET/accounts/reader",
+    "PATCH/accounts/update/password",
+    "PATCH/accounts/update/profile",
+    "DELETE/accounts"
+]

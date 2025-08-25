@@ -4,7 +4,10 @@ import {  Document } from "mongoose";
 
 
 type ReaderDocument = Reader & Document;
+
 const readerMongooseSchema = new mongoose.Schema<ReaderDocument>({
+    _id: {type: Number, length: 9, required: true},
+    role: {type: String},
     userName: {type: String, required: true},
     email: {type: String, required: true, unique: true },
     birthdate: { type: String, required: true },

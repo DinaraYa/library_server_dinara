@@ -1,8 +1,7 @@
-import { Types } from "mongoose";
-
 
 export type ReaderDto = {
-    // id: number,
+    id: number,
+    role: string,
     userName: string,
     email: string,
     password: string,
@@ -10,7 +9,9 @@ export type ReaderDto = {
 }
 
 export type Reader = {
-    _id?: string,
+    //_id?: string,
+    _id: number,
+    role: string,
     userName: string,
     email: string,
     birthdate: string,

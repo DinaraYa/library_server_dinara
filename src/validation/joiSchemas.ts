@@ -1,5 +1,5 @@
 import Joi from 'joi'
-import {BookGenres, BookStatus, PickRecord} from "../model/Book.js";
+import {BookGenres} from "../model/Book.js";
 
 
 export const BookDtoSchema = Joi.object({
@@ -10,24 +10,27 @@ export const BookDtoSchema = Joi.object({
 })
 
 export const ReaderDtoSchema = Joi.object({
-    id: Joi.string().length(24),
+    id:Joi.number().positive().max(999999999).min(100000000).required(),
+    role: Joi.string().min(4).required(),
     userName: Joi.string().min(1).required(),
     email: Joi.string().email().required(),
     password: Joi.string().alphanum().min(8).required(),
     birthdate: Joi.string().isoDate().required(),
 })
 
-export const ChangePassDtoSchema = Joi.object({
-    //id:Joi.number().positive().max(999999999).min(100000000).required(),
-    id: Joi.string().length(24).required(),
+export const ChangePasswordDtoSchema = Joi.object({
+    id:Joi.number().positive().max(999999999).min(100000000).required(),
+    //id: Joi.string().length(24).required(),
     oldPassword: Joi.string().alphanum().min(8).required(),
     newPassword: Joi.string().alphanum().min(8).required(),
 })
 
-// export const ChangePasswordDtoSchema = Joi.object({
-//     id: Joi.number().positive().max(999999999).min(100000000).required(),
-//     password: Joi.string().alphanum().min(8).required(),
-// })
+export const UpdateProfileDtoSchema = Joi.object({
+    id:Joi.number().positive().max(999999999).min(100000000).required(),
+    userName: Joi.string().min(1),
+    email: Joi.string().email(),
+    birthdate: Joi.string().isoDate()
+})
 
 export const BookGenresDtoSchema = Joi.object({
     genre: Joi.string().valid(...Object.values(BookGenres)).trim().required(),

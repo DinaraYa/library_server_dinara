@@ -14,16 +14,16 @@ export const addAccount = async (req: Request, res: Response) => {
 }
 
 export const getAccount= async (req: Request, res: Response) => {
-   const id = req.params.id;
+   const id = req.query.id;
     console.log("READER_ID " + id);
-   const reader = await accountServiceMongo.getAccount(id);
+   const reader = await accountServiceMongo.getAccount(Number(id));
     console.log("READER controller " + reader);
    res.status(200).json(reader);
 }
 export const removeAccount= async (req: Request, res: Response) => {
-    const id = req.params.id
+    const id = req.query.id
     console.log("READER_ID " + id);
-    const reader = await accountServiceMongo.removeAccount(id);
+    const reader = await accountServiceMongo.removeAccount(Number(id));
     console.log("READER controller " + reader);
     res.status(200).json(reader);
     response.send("Account deleted")
@@ -34,8 +34,14 @@ export const changePassword= async (req: Request, res: Response) => {
     console.log("Controller " + id);
     console.log(" oldPass "+oldPassword);
     console.log(" newPass " + newPassword)
-    // const _id = checkReaderId(id);
-    // console.log("Controller " + _id );
+    const _id = checkReaderId(id);
+    console.log("Controller " + _id );
     await accountServiceMongo.changePassword(id, oldPassword, newPassword);
     res.send("Password changed");
+}
+
+export const updateProfile = async (req: Request, res: Response) => {
+    const {id, userName, email, birthdate} = req.body;
+    const profile = await accountServiceMongo.updateProfile(id,userName, email, birthdate);
+    res.status(200).json(profile);
 }

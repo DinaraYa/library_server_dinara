@@ -3,6 +3,7 @@ import {Reader, ReaderDto} from "../model/Reader.js";
 import {ReaderModel} from "../model/ReaderMongooseModel.js";
 import {HttpError} from "../errorHandler/HttpError.js";
 import bcrypt from "bcryptjs";
+import {updateProfile} from "../controllers/accountController.js";
 
 export class AccountServiceImplMongo implements AccountService {
 
@@ -15,7 +16,7 @@ export class AccountServiceImplMongo implements AccountService {
         await readerDoc.save();
     }
 
-    async changePassword(id: string, oldPassword:string, newPassword: string, ): Promise<void> {
+    async changePassword(id: number, oldPassword:string, newPassword: string, ): Promise<void> {
         console.log(id, oldPassword, newPassword);
         const account = await ReaderModel.findById(id);
         console.log(account);
@@ -30,19 +31,32 @@ export class AccountServiceImplMongo implements AccountService {
         }
     }
 
+    async updateProfile (id: number, userName?: string, email?: string, birthdate?: string): Promise<Reader> {
+        const profile = await ReaderModel.findById(id);
+        console.log("PROFILE ", profile);
+        if(!profile) throw new HttpError(404, "Profile not found");
+        if(userName !== undefined) profile.userName = userName;
+        if(email !== undefined) profile.email = email;
+        if(birthdate !== undefined) profile.birthdate = birthdate;
+        await profile.save();
+        return profile;
+    }
 
-    async getAccount(id: string): Promise<Reader> {
+
+
+    async getAccount(id: number): Promise<Reader> {
         const reader = await ReaderModel.findById(id).exec();
         console.log("READER SERVICE " + reader)
         if (!reader) throw new HttpError(404, "Reader not found");
         return reader;
     }
 
-    async removeAccount(id: string): Promise<Reader> {
+    async removeAccount(id: number): Promise<Reader> {
         const user = await ReaderModel.findByIdAndDelete(id).exec();
         if (!user) throw new HttpError(404, "Reader not found");
         return user;
     }
+
 
 }
 
