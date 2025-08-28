@@ -47,7 +47,6 @@ export class AccountServiceImplMongo implements AccountService {
 
     async getAccountById(id: number): Promise<Reader> {
         const reader = await ReaderModel.findById(id).exec();
-        console.log("READER SERVICE " + reader)
         if (!reader) throw new HttpError(404, "Reader not found");
         return reader;
     }
@@ -65,6 +64,14 @@ export class AccountServiceImplMongo implements AccountService {
         if(!result) throw new HttpError(404, "Account not found");
         return result as unknown as Reader;
     }
+
+    async getAccountByName(reader: string) {
+        const account = await ReaderModel.findOne({userName: reader});
+        if(!account) throw new HttpError(404, "Account not found");
+        return account._id;
+    }
+
+
 }
 
 export const accountServiceMongo = new AccountServiceImplMongo();

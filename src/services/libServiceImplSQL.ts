@@ -45,6 +45,9 @@ export class LibServiceImplSQL implements LibService {
         return book;
     }
 
+    async getBooksByReader(id: number): Promise<Book[]> {
+        throw new HttpError(404, "Books not found.");
+    }
 }
 
 export const LibServiceSQL= new LibServiceImplSQL();

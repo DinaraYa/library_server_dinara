@@ -15,8 +15,8 @@ export const validationBody = (schema: ObjectSchema | ArraySchema) =>
 
 export const validationParams = (schema: ObjectSchema) =>
     (req: Request, res: Response, next: NextFunction) => {
-            if (!req.params) throw new HttpError(400, "Body required");
-            const {error} = schema.validate(req.params);
+            if (!req.query) throw new HttpError(400, "Body required");
+            const {error} = schema.validate(req.query);
             console.log(error?.details)
             if (error) throw new HttpError(400, error.message);
             next();

@@ -9,5 +9,6 @@ export interface LibService {
     returnBook: (id: string) => Promise<void>;
     getAllBooks: () => Promise<Book[]>,
     getBooksByGenre: (genre: BookGenres) => Promise<Book[]>,
+    getBooksByReader: (userId: number) => Promise<Book[]>,
     //getBooksByGenreAndStatus: (genre: BookGenres, status: BookStatus) => Promise<Book[]>,
 }

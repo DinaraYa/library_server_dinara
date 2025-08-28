@@ -56,6 +56,11 @@ export class LibServiceImplEmbedded implements LibService {
         lastRecord.returnDate = new Date().toISOString();
     }
 
+
+    async getBooksByReader(id: number): Promise<Book[]> {
+        throw new HttpError(404, "Books not found.");
+    }
+
 }
 
 export const libServiceEmbedded = new LibServiceImplEmbedded();

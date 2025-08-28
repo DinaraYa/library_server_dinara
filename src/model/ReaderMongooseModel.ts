@@ -9,7 +9,7 @@ type ReaderDocument = Reader & Document;
 const readerMongooseSchema = new mongoose.Schema<ReaderDocument>({
     _id: {type: Number, length: 9, required: true},
     roles: {type: [String], enum: Roles, required: true},
-    userName: {type: String, required: true},
+    userName: {type: String, required: true, unique: true},
     email: {type: String, required: true, unique: true },
     birthdate: { type: String, required: true },
     passHash: { type: String, required: true }

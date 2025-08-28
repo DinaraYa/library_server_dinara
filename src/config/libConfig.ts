@@ -35,7 +35,14 @@ export const PATH_ROUTES = {
     "PATCH/accounts/password" : [Roles.USER],
     "PATCH/accounts": [Roles.USER, Roles.ADMIN],
     "DELETE/accounts": [Roles.SUPERVISOR],
-    "PUT/accounts/roles": [Roles.SUPERVISOR]
+    "PUT/accounts/roles": [Roles.SUPERVISOR],
+    "GET/api/books": [Roles.USER],
+    "GET/api/books/genre": [Roles.USER],
+    "POST/api/books": [Roles.ADMIN],
+    "DELETE/api/books/remove": [Roles.SUPERVISOR],
+    "PATCH/api/books/pickup": [Roles.LIBRARIAN],
+    "PATCH/api/books/return": [Roles.LIBRARIAN],
+    "GET/api/books/reader_list": [Roles.LIBRARIAN, Roles.ADMIN],
 }
 
 export const CHECK_ID_ROUTES = [

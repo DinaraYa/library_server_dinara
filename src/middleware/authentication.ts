@@ -50,8 +50,6 @@ export const skipRoutes = (skipRoutes: string[]) =>
     (req: AuthRequest, res: Response, next: NextFunction) => {
         const route = req.method + req.path //POST/accounts
         if (!skipRoutes.includes(route) && !req.userId)
-        //     console.log("skipRoutes ", skipRoutes)
-        // console.log("req.userId " +req.userId)
         {throw new HttpError(401, "skipRoutes sent throw this error");}
         next();
     }
