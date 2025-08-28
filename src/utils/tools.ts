@@ -1,8 +1,9 @@
 import {BookDto, BookGenres, BookStatus} from "../model/Book.ts";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import {HttpError} from "../errorHandler/HttpError.js";
 import {Reader, ReaderDto} from "../model/Reader.js";
 import bcrypt from "bcryptjs";
+import {Roles} from "./libTypes.js";
 
 
 export function getGenre(genre: string) {
@@ -36,11 +37,11 @@ export const convertReaderDtoToReader = (dto: ReaderDto): Reader => {
     const hash = bcrypt.hashSync(dto.password, salt);
     return {
         _id: dto.id,
-        role: dto.role,
         userName: dto.userName,
         email: dto.email,
         birthdate: dto.birthdate,
         passHash: hash,
+        roles: [Roles.USER],
     } as Reader;
 }
 

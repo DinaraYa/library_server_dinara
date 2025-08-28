@@ -1,5 +1,6 @@
 import Joi from 'joi'
 import {BookGenres} from "../model/Book.js";
+import {Roles} from "../utils/libTypes.js";
 
 
 export const BookDtoSchema = Joi.object({
@@ -11,7 +12,7 @@ export const BookDtoSchema = Joi.object({
 
 export const ReaderDtoSchema = Joi.object({
     id:Joi.number().positive().max(999999999).min(100000000).required(),
-    role: Joi.string().min(4).required(),
+    //role: Joi.string().min(4).required(),
     userName: Joi.string().min(1).required(),
     email: Joi.string().email().required(),
     password: Joi.string().alphanum().min(8).required(),
@@ -25,12 +26,16 @@ export const ChangePasswordDtoSchema = Joi.object({
     newPassword: Joi.string().alphanum().min(8).required(),
 })
 
-export const UpdateProfileDtoSchema = Joi.object({
+export const UpdateAccountDtoSchema = Joi.object({
     id:Joi.number().positive().max(999999999).min(100000000).required(),
     userName: Joi.string().min(1),
     email: Joi.string().email(),
     birthdate: Joi.string().isoDate()
 })
+
+export const ChangeRolesSchema =  Joi.array<Roles[]>();
+
+export type ArraySchema = typeof ChangeRolesSchema;
 
 export const BookGenresDtoSchema = Joi.object({
     genre: Joi.string().valid(...Object.values(BookGenres)).trim().required(),

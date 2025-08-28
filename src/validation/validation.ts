@@ -1,9 +1,10 @@
 import e, {NextFunction, Response, Request} from "express";
 import {ObjectSchema} from 'joi';
 import {HttpError} from "../errorHandler/HttpError.js";
+import {ArraySchema} from "./joiSchemas.js";
 
 
-export const validationBody = (schema: ObjectSchema) =>
+export const validationBody = (schema: ObjectSchema | ArraySchema) =>
     (req: Request, res: Response, next: NextFunction) => {
         if (!req.body) throw new HttpError(400, "Body required");
         const {error} = schema.validate(req.body);

@@ -1,3 +1,4 @@
+import {Roles} from "../utils/libTypes.js";
 
 export type ReaderDto = {
     id: number,
@@ -11,7 +12,7 @@ export type ReaderDto = {
 export type Reader = {
     //_id?: string,
     _id: number,
-    role: string,
+    roles: Roles[],
     userName: string,
     email: string,
     birthdate: string,

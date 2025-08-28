@@ -1,13 +1,14 @@
 import * as mongoose from "mongoose";
 import {Reader} from "./Reader.js";
 import {  Document } from "mongoose";
+import {Roles} from "../utils/libTypes.js";
 
 
 type ReaderDocument = Reader & Document;
 
 const readerMongooseSchema = new mongoose.Schema<ReaderDocument>({
     _id: {type: Number, length: 9, required: true},
-    role: {type: String},
+    roles: {type: [String], enum: Roles, required: true},
     userName: {type: String, required: true},
     email: {type: String, required: true, unique: true },
     birthdate: { type: String, required: true },
