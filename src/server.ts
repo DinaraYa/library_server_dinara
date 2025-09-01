@@ -1,5 +1,5 @@
 import express, {NextFunction} from "express";
-import {CHECK_ID_ROUTES, PATH_ROUTES, PORT, SKIP_ROUTES} from "./config/libConfig.ts";
+import { configuration } from "./config/libConfig.ts";
 import {libRouter} from "./routes/libRouter.ts";
 import morgan from 'morgan';
 import * as fs from "node:fs";
@@ -9,6 +9,7 @@ import {accountRouter} from "./routes/accountRouter.js";
 import {authenticate, skipRoutes} from "./middleware/authentication.js";
 import {accountServiceMongo} from "./services/AccountServiceImplMongo.js";
 import {authorize, checkAccountById} from "./middleware/authorization.js";
+import {Roles} from "./utils/libTypes.ts";
 
 
 
@@ -23,15 +24,15 @@ export const launchServer = () => {
 
     const app = express();
     //app.listen(process.env.PORT, () => console.log(`Server runs http://localhost:${process.env.PORT}`));
-    app.listen(PORT, () => console.log(`Server runs http://localhost:${PORT}`));
+    app.listen(configuration.port, () => console.log(`Server runs http://localhost:${configuration.port}`));
     const logStream = fs.createWriteStream('access.log', { flags: 'a' });
 
     // ===================== Middleware ===================
     app.use(authenticate(accountServiceMongo));
-    app.use(skipRoutes(SKIP_ROUTES));
-    app.use(authorize(PATH_ROUTES));
+    app.use(skipRoutes(configuration.skipRoutes));
+    app.use(authorize(configuration.pathRoles as Record<string, Roles[]>));
     app.use(express.json());
-    app.use(checkAccountById(CHECK_ID_ROUTES));
+    app.use(checkAccountById(configuration.checkIdRoutes));
     app.use(morgan('dev')); // пишем в консоль
 
     app.use(morgan('combined', { stream: logStream }));

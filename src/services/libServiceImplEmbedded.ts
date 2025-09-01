@@ -1,7 +1,7 @@
 import {LibService} from "./libService.ts";
 import {Book, BookGenres, BookStatus} from "../model/Book.ts";
 import {HttpError} from "../errorHandler/HttpError.js";
-import {pool} from "../config/libConfig.js";
+
 
 
 export class LibServiceImplEmbedded implements LibService {
