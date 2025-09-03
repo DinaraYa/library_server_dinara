@@ -48,6 +48,10 @@ export const BookIdDtoSchema = Joi.object({
 export const BookPickUpDtoSchema = Joi.object({
     id: Joi.string(), // return length(36)
     reader: Joi.string().min(3).trim().required(),
-
 })
+
+export const LoginSchema = Joi.object({
+    id:Joi.number().positive().max(999999999).min(100000000).required(),
+    password: Joi.string().alphanum().min(8).required()
+});
 

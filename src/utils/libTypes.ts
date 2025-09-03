@@ -12,5 +12,11 @@ export enum Roles {
     ADMIN = "admin",
     GUEST = "guest",
     SUPERVISOR = "super",
-    LIBRARIAN = "librarian"
+    LIBRARIAN = "librarian",
+    PREMIUM_USER ="premium"
+}
+
+export interface LoginPassType{
+    userId: number,
+    password: string
 }

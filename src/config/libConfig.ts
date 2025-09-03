@@ -9,7 +9,14 @@ export interface AppConfig {
     pathRoles:Record<string, string[]>;
     checkIdRoutes:string[],
     pool:Pool,
-    mongoUri:string
+    mongoUri:string,
+    jwt:{
+        secret:string,
+        exp:string | number
+
+    },
+    "timeWindow": number,
+    "userLimit": number
 }
 
 //export const PORT = 3117;
@@ -26,7 +33,11 @@ export const configuration: AppConfig ={
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD
     }),
-    mongoUri:process.env.MONGO_URI || "dev db address"
+    mongoUri:process.env.MONGO_URI || "dev db address",
+    jwt:{
+        secret: process.env.JWT_SECRET || "super-secret",
+        exp: process.env.JWT_EXP || "1h"
+    }
 }
 
 

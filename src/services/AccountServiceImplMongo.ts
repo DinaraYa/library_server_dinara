@@ -3,7 +3,8 @@ import {Reader} from "../model/Reader.js";
 import {ReaderModel} from "../model/ReaderMongooseModel.js";
 import {HttpError} from "../errorHandler/HttpError.js";
 import bcrypt from "bcryptjs";
-import {Roles} from "../utils/libTypes.js";
+import {LoginPassType, Roles} from "../utils/libTypes.js";
+import {getJWT} from "../utils/tools.js";
 
 
 export class AccountServiceImplMongo implements AccountService {
@@ -72,6 +73,13 @@ export class AccountServiceImplMongo implements AccountService {
     }
 
 
+    async login(credentials: LoginPassType): Promise<string> {
+        const profile = await ReaderModel.findById(credentials.userId);
+        if(!profile || !bcrypt.compareSync(credentials.password, profile.passHash))
+            throw new HttpError(401, "Incorrect login or password");
+        const token = getJWT(credentials.userId, profile.roles as Roles[]);
+        return token;
+    }
 }
 
 export const accountServiceMongo = new AccountServiceImplMongo();

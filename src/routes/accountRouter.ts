@@ -3,7 +3,7 @@ import * as controller from "../controllers/accountController.js"
 import {validationBody} from "../validation/validation.js";
 import {
     ChangePasswordDtoSchema,
-    ChangeRolesSchema,
+    ChangeRolesSchema, LoginSchema,
     ReaderDtoSchema,
     UpdateAccountDtoSchema
 } from "../validation/joiSchemas.js";
@@ -23,6 +23,7 @@ accountRouter.patch('/password', validationBody(ChangePasswordDtoSchema), contro
 
 accountRouter.patch('/', validationBody(UpdateAccountDtoSchema), controller.updateAccount);
 
-accountRouter.put('/roles', validationBody(ChangeRolesSchema), controller.changeRoles)
+accountRouter.put('/roles', validationBody(ChangeRolesSchema), controller.changeRoles);
 
+accountRouter.post('/login', validationBody(LoginSchema), controller.login);
 

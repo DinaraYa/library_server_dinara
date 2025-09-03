@@ -2,7 +2,12 @@ import {Request, response, Response} from "express";
 import {Reader, ReaderDto} from "../model/Reader.js";
 import {checkReaderId, convertReaderDtoToReader} from "../utils/tools.js";
 import {accountServiceMongo} from "../services/AccountServiceImplMongo.js";
-import {Roles} from "../utils/libTypes.js";
+import {LoginPassType, Roles} from "../utils/libTypes.js";
+
+export const login = async (req: Request, res: Response) => {
+    const result = await accountServiceMongo.login({userId: checkReaderId(req.body.id), password: req.body.password});
+    res.json(result);
+}
 
 
 export const changeRoles = async (req: Request, res: Response) => {

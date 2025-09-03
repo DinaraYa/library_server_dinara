@@ -10,6 +10,8 @@ import {authenticate, skipRoutes} from "./middleware/authentication.js";
 import {accountServiceMongo} from "./services/AccountServiceImplMongo.js";
 import {authorize, checkAccountById} from "./middleware/authorization.js";
 import {Roles} from "./utils/libTypes.ts";
+import {limitRequests} from "./middleware/limitRequests.js";
+import {RequestsByUser} from "./utils/constants.js";
 
 
 
@@ -29,12 +31,17 @@ export const launchServer = () => {
 
     // ===================== Middleware ===================
     app.use(authenticate(accountServiceMongo));
+
     app.use(skipRoutes(configuration.skipRoutes));
     app.use(authorize(configuration.pathRoles as Record<string, Roles[]>));
+    app.use(limitRequests(RequestsByUser));
     app.use(express.json());
-    app.use(checkAccountById(configuration.checkIdRoutes));
-    app.use(morgan('dev')); // пишем в консоль
 
+    app.use(checkAccountById(configuration.checkIdRoutes));
+
+
+
+    app.use(morgan('dev')); // пишем в консоль
     app.use(morgan('combined', { stream: logStream }));
 
     // app.use((req: Request, res:Response, next:NextFunction) => next())
@@ -50,14 +57,14 @@ export const launchServer = () => {
         res.status(404).send("Page not found")
     })
 
-    //  function errorHandler(err: any, req: Request, res: Response, next: NextFunction) {
-    //     console.error("Server error: ", err);   // вот тут будет полный объект ошибки
-    //     // @ts-ignore
-    //     res.status(500).json({ message: "Internal Server Error", error: err.message });
-    // }
+     function errorHandler(err: any, req: Request, res: Response, next: NextFunction) {
+        console.error("Server error: ", err);   // вот тут будет полный объект ошибки
+        // @ts-ignore
+        res.status(500).json({ message: "Internal Server Error", error: err.message });
+    }
 
     //================ ErrorHandler ================
 
-    app.use(errorHandler);
+    //app.use(errorHandler);
 
 }

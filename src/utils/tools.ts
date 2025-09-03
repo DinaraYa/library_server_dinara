@@ -4,6 +4,9 @@ import {HttpError} from "../errorHandler/HttpError.js";
 import {Reader, ReaderDto} from "../model/Reader.js";
 import bcrypt from "bcryptjs";
 import {Roles} from "./libTypes.js";
+import jwt, {SignOptions} from "jsonwebtoken";
+import {optional} from "joi";
+import {configuration} from "../config/libConfig.js";
 
 
 export function getGenre(genre: string) {
@@ -50,4 +53,14 @@ export const checkReaderId = (id: string | undefined) => {
     const _id = parseInt(id as string);
     if (!_id) throw new HttpError(400, "ID must be a number");
     return _id;
+}
+
+export const getJWT = (userId:number, roles: Roles[]) => {
+    const payload = {roles: JSON.stringify(roles)};
+    const secret = configuration.jwt.secret;
+    const options: SignOptions = {
+        expiresIn: configuration.jwt.exp as any,
+        subject: userId.toString()
+    }
+    return  jwt.sign(payload, secret, options)
 }

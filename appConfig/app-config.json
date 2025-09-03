@@ -3,17 +3,19 @@
   "port":3117,
   "skipRoutes":[
     "POST/accounts",
+    "POST/accounts/login",
     "GET/api/books"
+
   ],
   "pathRoles":{
-    "GET/accounts/reader_id" : ["user", "admin"],
-    "PATCH/accounts/password" : ["user"],
-    "PATCH/accounts": ["user", "admin"],
+    "GET/accounts/reader_id" : ["user", "admin", "premium"],
+    "PATCH/accounts/password" : ["user", "premium"],
+    "PATCH/accounts": ["user", "admin", "premium"],
     "DELETE/accounts": ["super"],
     "PUT/accounts/roles": ["super"],
 
-    "GET/api/books": ["user"],
-    "GET/api/books/genre": ["user"],
+    "GET/api/books": ["user", "librarian", "admin", "premium"],
+    "GET/api/books/genre": ["user", "librarian", "premium"],
     "POST/api/books": ["admin"],
     "DELETE/api/books/remove": ["admin"],
     "PATCH/api/books/pickup": ["librarian"],
@@ -24,5 +26,7 @@
     "GET/accounts/reader_id",
     "PATCH/accounts/password",
     "PATCH/accounts"
-  ]
+  ],
+  "timeWindow": 30000,
+  "userLimit": 5
 }
