@@ -4,9 +4,15 @@ import bcrypt from "bcryptjs";
 import {HttpError} from "../errorHandler/HttpError.js";
 import {AuthRequest, Roles} from "../utils/libTypes.js";
 import {checkReaderId} from "../utils/tools.js";
+import jwt, {JwtPayload} from "jsonwebtoken";
+import {configuration} from "../config/libConfig.js";
+
+const BASIC = "Basic ";
+const BEARER = "Bearer ";
+
 
 async function getBasicAuth(authHeader: string, service: AccountService, req: AuthRequest, res: Response) {
-    const BASIC = "Basic ";
+
     const auth = Buffer.from(authHeader.substring(BASIC.length), "base64").toString("ascii");
     console.log(auth);
 
@@ -36,12 +42,30 @@ async function getBasicAuth(authHeader: string, service: AccountService, req: Au
 }
 
 
+function jwtAuth(authHeader: string, req: AuthRequest) {
+    const token = authHeader.substring(BEARER.length);
+    try {
+        const payload = jwt.verify(token, configuration.jwt.secret) as JwtPayload;
+        console.log(payload);
+        req.userId = +payload.sub!;
+        req.roles = JSON.parse(payload.roles) as Roles[];
+        req.userName = "Anonymous"
+    } catch (e) {
+        console.log("reader not AUTHENTICATED by JWToken")
+    }
+
+
+
+}
+
 export const authenticate = (service: AccountService) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         const autHeader = req.header('Authorization');
         console.log(autHeader);
-        if (autHeader)
+        if (autHeader && autHeader.startsWith(BASIC))
             await getBasicAuth(autHeader, service, req, res);
+        else if (autHeader && autHeader.startsWith(BEARER))
+            jwtAuth(autHeader, req)
         next();
     }
 }
